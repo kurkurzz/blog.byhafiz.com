@@ -1,5 +1,3 @@
-# S3 Presigned URL for Single and Multipart Upload
-
 Amazon Simple Storage Service (S3) has emerged as a cornerstone solution for scalable and reliable cloud storage, catering to a multitude of use cases. 
 
 The common approach that we did is to use AWS CLI or some backend scripts to upload things to the cloud. However, sometimes, we just want to upload files from frontend directly to S3 bucket, without the need to pass the backend first. That will just introduce an unnecessary layer of file transfer.
