@@ -24,16 +24,16 @@ For this blog, I will demonstrate using `Python` as backend and `Javascript` spe
 	{
 		"Version": "2012-10-17",
 		"Statement": [
-		{
-			"Effect": "Allow",
-			"Principal": "*",
-			"Action": [
-				"s3:PutObject",
-				"s3:PutObjectAcl",
-				"s3:GetObject"
-			],
-			"Resource": "arn:aws:s3:::bucket-name/*"
-		}
+			{
+				"Effect": "Allow",
+				"Principal": "*",
+				"Action": [
+					"s3:PutObject",
+					"s3:PutObjectAcl",
+					"s3:GetObject"
+				],
+				"Resource": "arn:aws:s3:::bucket-name/*"
+			}
 		]
 	}
 	```
@@ -61,7 +61,7 @@ For this blog, I will demonstrate using `Python` as backend and `Javascript` spe
 		}
 	]
 	```
-	This will allow us to upload file directly to S3 via presigned URL. Most important to have is `PUT` in `AllowedMethods` and `Etag` in `ExposeHeaders`
+	This will allow us to upload file directly to S3 via presigned URL. Most important is to have `PUT` in `AllowedMethods` and `Etag` in `ExposeHeaders`
 
 1. Make sure your `IAM User/Role` have the necessary permission to the bucket. To get started, you can attach `AmazonS3FullAccess` policies to your `IAM User/Role`. (Not a recommended approach)
 
@@ -74,7 +74,7 @@ Now the bucket and user have all the necessary permissions, we can get dive into
 I created a file called `aws_utils.py` that will handle all the operations with S3.
 
 **Generate presigned URL**
-```py
+```python
 def get_s3_presigned_url(file_name, file_type, upload_id=None, part_number=None):
 	try:
 		resource_url = f"https://{os.getenv('S3_BUCKET')}.s3.amazonaws.com/{file_name}"
@@ -112,7 +112,7 @@ And that is basically it for single upload!
 The method above also caters for multipart upload. For that case, you do not need to supply `ContentType`, but instead `UploadID` and `PartNumber`. We will see about this in the next part of the code.
 
 **Initiate and complete multipart upload**
-```py
+```python
 def create_multipart_upload(file_name):
 	try:
 		response = s3.create_multipart_upload(
@@ -122,7 +122,6 @@ def create_multipart_upload(file_name):
 		upload_id = response['UploadId']
 		return upload_id
 	except Exception as e:
-		print(e)
 		return None
 	
 def complete_multipart_upload(file_name, upload_id, parts):
@@ -135,7 +134,6 @@ def complete_multipart_upload(file_name, upload_id, parts):
 		)
 		return True
 	except Exception as e:
-		print(e)
 		return None
 ```
 
@@ -168,21 +166,19 @@ Let's assume we already create 3 endpoints which are:
 
 ```js
 const file = //your file object
+const fileName = 'example.png'
+const fileType = 'image/png'
 
 // send file metadata (file_name and file_type to backend)
 const response = await axios.post('/get-s3-presigned-url/', {
-					file_name: `image-name.png`,
-					file_type: 'image/png'
-			}, {
-				headers: {
-					'Content-Type': 'image/png'
-				}
-			})
+						file_name: fileName,
+						file_type: fileType
+					})
 
 // use the presigned url to upload content
-await axios.put(thumbnailResponse.data.presigned_url, retrieveThumbnail(index), {
+await axios.put(response.data.presigned_url, file, {
 	headers: {
-		'Content-Type': 'image/jpeg'
+		'Content-Type': fileType
 	}
 })
 ```
@@ -196,8 +192,8 @@ Now, we will take a look at multipart upload. The code is a bit long so I will s
 ```js
 // only supply the filename (file path in S3)
 const initiateMultipartUploadResponse = await axios.post('/initiate-multipart-upload/', {
-				file_name: fileName
-			})
+												file_name: fileName
+											})
 ```
 **Step 2: Split file into chunks, request presigned url for each chunks and upload separately**
 ```js
@@ -206,8 +202,8 @@ const chunkSize = 2 * 1024 * 1024 * 1024 // 2GB in bytes
 const totalChunks = Math.ceil(file.size / chunkSize) // calc total number of chunks for the file
 const chunkIndexList = Array.apply(null, Array(totalChunks)).map((x, i) => { return i+1 }) // [1, 2, 3, ...]
 
+let resourceUrl = '' // will be override later
 
-let resourceUrl = ''
 // upload every chunks of the file
 // wrapped in Promise.all so that after all upload is done, we want to call complete upload endpoint
 await Promise.all(chunkIndexList.map(async (partNumber) => {
@@ -226,11 +222,11 @@ await Promise.all(chunkIndexList.map(async (partNumber) => {
 
 	// start upload the chunk
 	const uploadedResponse = await axios.put(presignedUrlResponse.data.presigned_url, chunk,
-	{
-		headers: {
-			'Content-Type': ''
+		{
+			headers: {
+				'Content-Type': '' // this is important
+			}
 		}
-	}
 	)
 	.then(response => {
 		// keep the etag and part number. this will be used to complete the upload
@@ -256,7 +252,7 @@ const completeMultipartResponse = await axios.post('/complete-multipart-upload/'
 })
 ```
 
-Done!
+The upload is done!
 
 ## Conclusion
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width initial-scale=1.0">
+
+	<meta property="og:title" content="Blog by Hafiz">
+	<meta property="og:description" content="Why so nerd.">
+	<meta property="og:image" content="https://user-images.githubusercontent.com/64152220/162259966-97668de7-ea3d-413a-9d33-ca7874594e03.png">
+	<meta property="og:url" content="<%= BASE_URL %>">
+
+	<meta name="twitter:card" content="summary_large_image">
+	<link rel="icon" href="assets/favicon.ico">
+	<title>Blog by Hafiz</title>
+
+	<link rel="stylesheet" href="assets/styles.css">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+	<script>
+		tailwind.config = {
+			theme: {
+				extend: {
+					fontFamily: {
+						'merriweather': ['Merriweather'],
+						'poppins': ['Poppins'],
+					}
+				}
+			}
+		}
+	</script>
+</head>
+
+<body class="w-screen h-[calc(100vdh)] sm:h-screen flex flex-col overflow-clip bg-zinc-200 font-merriweather">
+	<div class="max-w-3xl w-full h-fit mx-auto py-24 overflow-auto hide-scrollbar">
+		<span class="text-zinc-900 font-poppins text-4xl font-bold tracking-wide">Blog by Hafiz 👋</span>
+		<div class="mt-8">
+			<p class="text-zinc-800"> 
+				Hi all, welcome the mainpage for my blog. I choose to post my blogs here instead of other platform like Medium because
+				I want to keep everything free and accessible to everyone. Let's hope it got blessed by the search engine algorithm.
+			</p>
+		</div>
+		<div class="mt-8">
+			<ul>
+				<li> 👉
+					<a href="/s3-presigned-url.html" class="text-blue-700 hover:text-blue-600 underline">
+						S3 Presigned URL for Single and Multipart Upload
+					</a>
+				</li>
+			</ul>
+		</div>		
+	</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width initial-scale=1.0">
+
+	<meta property="og:title" content="Blog by Hafiz">
+	<meta property="og:description" content="Why so nerd.">
+	<meta property="og:image" content="https://user-images.githubusercontent.com/64152220/162259966-97668de7-ea3d-413a-9d33-ca7874594e03.png">
+	<meta property="og:url" content="<%= BASE_URL %>">
+
+	<meta name="twitter:card" content="summary_large_image">
+	<link rel="icon" href="assets/favicon.ico">
+	<title>Blog by Hafiz</title>
+
+	<link rel="stylesheet" href="assets/styles.css">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+	<script>
+		tailwind.config = {
+			theme: {
+				extend: {
+					fontFamily: {
+						'merriweather': ['Merriweather'],
+						'poppins': ['Poppins'],
+					}
+				}
+			}
+		}
+	</script>
+
+	<script
+		type="module"
+		src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"
+	></script>	
+</head>
+
+<body class="w-screen h-[calc(100vdh)] sm:h-screen flex flex-col overflow-clip bg-zinc-200 font-merriweather">
+	<div class="max-w-3xl w-full h-fit mx-auto py-24 overflow-auto hide-scrollbar ">
+		<zero-md src="blogs/1_s3_presigned_url.md">
+			<!-- <template >
+				<style>
+					/* p {
+						color: aqua;
+					} */
+				</style>
+			</template> -->
+		</zero-md>
+	</div>
+</body>
+</html>
