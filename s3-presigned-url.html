@@ -18,6 +18,9 @@
 	<script src="https://cdn.tailwindcss.com"></script>
 	<script>
 		tailwind.config = {
+			content: [
+				"./*.html"
+			],
 			theme: {
 				extend: {
 					fontFamily: {
@@ -38,7 +41,7 @@
 <body class="w-screen h-[calc(100dvh)] sm:h-screen flex flex-col overflow-clip bg-zinc-200 font-merriweather">
 	<div class="text-zinc-900 max-w-3xl w-full h-fit mx-auto pt-12 sm:pt-24 overflow-auto hide-scrollbar px-4
 			flex flex-col">
-		<span class="  font-poppins text-4xl font-bold tracking-wide">
+		<span class=" font-poppins text-4xl font-bold tracking-wide">
 			S3 Presigned URL for Single and Multipart Upload
 		</span>
 		<span class="text-sm italic mt-2 text-zinc-600 ">last updated: 6 September 2023</span>
@@ -47,7 +50,7 @@
 			<div class="flex flex-col text-base font-poppins ml-4">
 				<span class="font-bold">Hafiz</span>
 				<a href="mailto:hafiz@enygma.ai" class="font-thin text-xs mt-2">hafiz@enygma.ai</a>
-				<span class="text-xs mt-0.5">Co-founder | AI Engineer</span>
+				<span class="text-xs mt-0.5">co-founder | AI engineer</span>
 				<a href="https://enygma.ai" class="text-xs">enygma.ai</a>
 			</div>
 		</div>
